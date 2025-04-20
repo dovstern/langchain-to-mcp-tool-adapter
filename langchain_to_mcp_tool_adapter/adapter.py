@@ -75,6 +75,11 @@ def handle_artifact_response(func):
             }
             
             for artifact in artifacts:
+                # response["content"].append({
+                #     "type": "file",
+                #     "data": artifact.data,
+                #     "mimeType": artifact.mime_type
+                # })
                 if artifact["type"] == "file":
                     file_data = artifact["file"]["file_data"]
                     mime_type = _extract_mime_type(file_data)

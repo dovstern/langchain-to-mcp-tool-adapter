@@ -1,0 +1,88 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# LangChain ↔ MCP Tool Adapter Rules
+
+## Project Context
+This project provides a robust adapter for converting LangChain tools (with their descriptions, argument schemas, and response formats) into FastMCP tools, ensuring seamless interoperability between the two ecosystems. The adapter handles both standard string/JSON outputs and artifact outputs (such as images and PDFs), bridging the differences in how each framework expects tool responses.
+
+## Key Differences & Adaptation Guidance
+
+### 1. Artifact Handling
+- **MCP Tool Artifact Output:**
+  - For outputs like PDFs or images, MCP tools must return a dictionary with a `content` key containing a list of content blocks.
+  - Example for a PDF:
+    ```python
+    return {
+      "content": [
+        {"type": "text", "text": "Here is the pdf requested."},
+        {"type": "file", "data": "data:application/pdf;base64,{base64_string}", "mimeType": "application/pdf"}
+      ]
+    }
+    ```
+- **LangChain Tool Artifact Output:**
+  - LangChain tools returning artifacts must use `response_format="content_and_artifact"` in their tool definition.
+  - The tool function should return a tuple: `(content: str, artifacts: list)`.
+  - Each artifact should be a dictionary with at least `type: "file"` and a `file` dict containing `filename` and `file_data` (a data URI string).
+  - Example:
+    ```python
+    content = "Here is the pdf of the slide requested."
+    artifacts = [{
+        "type": "file",
+        "file": {
+            "filename": "slide10.pdf",
+            "file_data": f"data:application/pdf;base64,{base64_string}",
+        }
+    }]
+    return content, artifacts
+    ```
+  - In the tool definition:
+    ```python
+    Tool(
+        name="generic_get_slide",
+        description="...",
+        func=...,  # your function
+        response_format="content_and_artifact"
+    )
+    ```
+  - See: https://python.langchain.com/docs/how_to/tool_artifacts/
+
+### 2. Argument Schema
+- Always use Pydantic models for argument schemas when possible. This ensures robust validation and clear API documentation for both LangChain and MCP tools.
+- If using type annotations, prefer `Annotated` types with descriptive strings for each argument.
+
+### 3. Metadata Preservation
+- When converting, always preserve:
+  - Tool name
+  - Description
+  - Argument schema (preferably as a Pydantic model)
+  - Response format (including artifact handling)
+
+### 4. Clean Code & Best Practices
+- Avoid code duplication by encapsulating adaptation logic in reusable functions.
+- Use clear, self-explanatory naming for all adapter functions and variables.
+- Minimize comments except where logic is non-obvious; rely on clean code and docstrings.
+- Follow object-oriented principles where possible to maximize extensibility and maintainability.
+
+### 5. LLM Prompting Guidance
+- When prompting an LLM to generate or adapt a tool:
+  - Explicitly specify the expected output format (especially for artifacts).
+  - Provide example input and output for both standard and artifact cases.
+  - Clarify the distinction between LangChain and MCP artifact handling.
+  - Encourage the use of Pydantic models for argument schemas.
+  - Remind the LLM to preserve all tool metadata during conversion.
+
+## Summary Table
+| Feature                | LangChain Tool                        | MCP Tool                                    |
+|------------------------|---------------------------------------|---------------------------------------------|
+| Standard Output        | `str` or `dict`                       | `str` or `dict`                             |
+| Artifact Output        | `(content, artifacts)` tuple,         | `{"content": [text, file, ...]}`           |
+|                        | `response_format="content_and_artifact"` |                                             |
+| Arg Schema             | Pydantic model or type annotations    | Pydantic model or type annotations          |
+| Metadata               | name, description, args, response_fmt | name, description, args, response_fmt        |
+
+## References
+- [LangChain Tool Artifacts Documentation](mdc:https:/python.langchain.com/docs/how_to/tool_artifacts)
+- See project README for more background and usage examples. 
