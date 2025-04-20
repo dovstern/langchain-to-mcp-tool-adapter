@@ -1,0 +1,41 @@
+from setuptools import setup, find_packages
+
+with open("README.md", "r", encoding="utf-8") as fh:
+    long_description = fh.read()
+
+setup(
+    name="langchain-to-mcp-tool-adapter",
+    version="0.1.0",
+    author="LangChain to MCP Tool Adapter Contributors",
+    author_email="your.email@example.com",
+    description="Adapter for converting LangChain tools to FastMCP tools",
+    long_description=long_description,
+    long_description_content_type="text/markdown",
+    url="https://github.com/yourusername/langchain-to-mcp-tool-adapter",
+    packages=find_packages(),
+    classifiers=[
+        "Programming Language :: Python :: 3",
+        "Programming Language :: Python :: 3.8",
+        "Programming Language :: Python :: 3.9",
+        "Programming Language :: Python :: 3.10",
+        "License :: OSI Approved :: MIT License",
+        "Operating System :: OS Independent",
+        "Development Status :: 4 - Beta",
+        "Intended Audience :: Developers",
+        "Topic :: Software Development :: Libraries :: Python Modules",
+    ],
+    python_requires=">=3.8",
+    install_requires=[
+        "langchain>=0.0.267",
+        "mcp>=0.1.0",
+        "pydantic>=2.0.0"
+    ],
+    extras_require={
+        "dev": [
+            "pytest>=7.0.0",
+            "black>=23.0.0",
+            "isort>=5.0.0",
+            "flake8>=5.0.0",
+        ],
+    },
+) 
