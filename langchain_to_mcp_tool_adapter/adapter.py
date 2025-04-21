@@ -1,6 +1,8 @@
 from mcp.server import FastMCP
 from langchain.tools import Tool
 import re
+import functools
+from mcp.types import ImageContent, EmbeddedResource, BlobResourceContents
 
 def reconstruct_func_from_tool(tool: Tool):
     """
@@ -16,13 +18,16 @@ def reconstruct_func_from_tool(tool: Tool):
     description = tool.description
     args_schema = tool.args_schema
     
+    @functools.wraps(func)
     def wrapper(*args, **kwargs):
         return func(*args, **kwargs)
     
-    wrapper.__name__ = func.__name__
+    # Override with tool-specific attributes
     if description is not None:
         wrapper.__doc__ = description
-    if args_schema is not None:
+        
+    # Add args schema data if needed
+    if args_schema is not None and not hasattr(wrapper, '__annotations__'):
         wrapper.__annotations__ = args_schema.model_json_schema()
     
     # Copy the response_format attribute if it exists
@@ -58,6 +63,7 @@ def handle_artifact_response(func):
     Returns:
         A wrapped function that converts LangChain artifact format to MCP format
     '''
+    @functools.wraps(func)
     def wrapper(*args, **kwargs):
         # Check if this is an artifact-returning function
         has_response_format = hasattr(func, 'response_format')
@@ -65,14 +71,8 @@ def handle_artifact_response(func):
         
         if is_artifact:
             text, artifacts = func(*args, **kwargs)
-            response = {
-                "content": [
-                    {
-                        "type": "text",
-                        "text": text
-                    }   
-                ]
-            }
+            # init a list (will be converted to a tuple)
+            response = [text]
             
             for artifact in artifacts:
                 # response["content"].append({
@@ -80,25 +80,22 @@ def handle_artifact_response(func):
                 #     "data": artifact.data,
                 #     "mimeType": artifact.mime_type
                 # })
-                if artifact["type"] == "file":
+                if artifact["type"] == "image_url":
+                    file_data = artifact["image_url"]["url"]
+                    mime_type = _extract_mime_type(file_data)
+                    response.append(ImageContent(type='image', data=file_data, mimeType=mime_type))
+                elif artifact["type"] == "file":
                     file_data = artifact["file"]["file_data"]
                     mime_type = _extract_mime_type(file_data)
+                    file_name = artifact["file"]["filename"]
+                    response.append(EmbeddedResource(type="resource", resource=BlobResourceContents(blob=file_name, uri=file_data, mimeType=mime_type)))
                     
-                    response["content"].append({
-                        "type": "file",
-                        "data": file_data,
-                        "mimeType": mime_type
-                    })
-            
-            return response
+            return tuple(response)
+            # return response
         else:
             return func(*args, **kwargs)
     
-    # Preserve function metadata
-    wrapper.__name__ = func.__name__
-    wrapper.__doc__ = func.__doc__
-    if hasattr(func, '__annotations__'):
-        wrapper.__annotations__ = func.__annotations__
+    # Ensure response_format attribute is preserved
     if hasattr(func, 'response_format'):
         wrapper.response_format = func.response_format
     
@@ -115,7 +112,12 @@ def add_langchain_tool_to_server(server: FastMCP, tool: Tool):
     Returns:
         None
     """
+    
+    # First reconstruct the function from the LangChain tool
     func = reconstruct_func_from_tool(tool)
+    
+    # Wrap it to handle artifact responses
     func = handle_artifact_response(func)
+    
+    # Add the tool to the server
     server.add_tool(func)
-

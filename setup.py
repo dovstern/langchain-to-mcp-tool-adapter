@@ -7,11 +7,11 @@ setup(
     name="langchain-to-mcp-tool-adapter",
     version="0.1.0",
     author="LangChain to MCP Tool Adapter Contributors",
-    author_email="your.email@example.com",
+    author_email="maintainers@example.com",
     description="Adapter for converting LangChain tools to FastMCP tools",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="https://github.com/yourusername/langchain-to-mcp-tool-adapter",
+    url="https://github.com/dovstern/langchain-to-mcp-tool-adapter",
     packages=find_packages(),
     classifiers=[
         "Programming Language :: Python :: 3",
@@ -26,9 +26,9 @@ setup(
     ],
     python_requires=">=3.8",
     install_requires=[
-        "langchain>=0.0.267",
-        "mcp>=0.1.0",
-        "pydantic>=2.0.0"
+        "langchain>=0.1.0,<0.4.0",
+        "fastmcp>=1.0.0",
+        "pydantic>=2.0.0,<3.0.0"
     ],
     extras_require={
         "dev": [
@@ -36,6 +36,9 @@ setup(
             "black>=23.0.0",
             "isort>=5.0.0",
             "flake8>=5.0.0",
+            "langchain-mcp-adapters",
+            "langgraph",
+            "langchain-openai",
         ],
     },
 ) 
