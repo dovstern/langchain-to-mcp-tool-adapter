@@ -75,11 +75,6 @@ def handle_artifact_response(func):
             response = [text]
             
             for artifact in artifacts:
-                # response["content"].append({
-                #     "type": "file",
-                #     "data": artifact.data,
-                #     "mimeType": artifact.mime_type
-                # })
                 if artifact["type"] == "image_url":
                     file_data = artifact["image_url"]["url"]
                     mime_type = _extract_mime_type(file_data)
@@ -91,7 +86,6 @@ def handle_artifact_response(func):
                     response.append(EmbeddedResource(type="resource", resource=BlobResourceContents(blob=file_name, uri=file_data, mimeType=mime_type)))
                     
             return tuple(response)
-            # return response
         else:
             return func(*args, **kwargs)
     
