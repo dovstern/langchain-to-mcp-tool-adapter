@@ -44,19 +44,17 @@ def test_handle_artifact_response():
     result = wrapped("input_param")
     
     # Validate the response format
-    assert isinstance(result, dict)
-    assert "content" in result
-    assert isinstance(result["content"], list)
-    assert len(result["content"]) == 2  # Text and one file
+    assert isinstance(result, tuple)
+    assert len(result) == 2  # Text and one file
     
     # Verify text element
-    assert result["content"][0]["type"] == "text"
-    assert result["content"][0]["text"] == "This is text content"
+    assert result[0] == "This is text content"
     
     # Verify file element
-    assert result["content"][1]["type"] == "file"
-    assert result["content"][1]["data"] == "data:image/png;base64,abcdef123456"
-    assert result["content"][1]["mimeType"] == "image/png"
+    assert result[1].type == "resource"
+    assert str(result[1].resource.uri) == "data:image/png;base64,abcdef123456"
+    assert result[1].resource.mimeType == "image/png"
+    assert result[1].resource.blob == "test.png"
 
 def test_response_metadata_preserved():
     """Test that function metadata is preserved."""
