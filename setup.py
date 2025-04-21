@@ -18,6 +18,7 @@ setup(
         "Programming Language :: Python :: 3.8",
         "Programming Language :: Python :: 3.9",
         "Programming Language :: Python :: 3.10",
+        "Programming Language :: Python :: 3.11",
         "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
         "Development Status :: 4 - Beta",
@@ -39,6 +40,8 @@ setup(
             "langchain-mcp-adapters",
             "langgraph",
             "langchain-openai",
+            "twine>=4.0.0",
+            "build>=0.10.0",
         ],
     },
 ) 
