@@ -28,7 +28,7 @@ setup(
     python_requires=">=3.8",
     install_requires=[
         "langchain>=0.1.0,<0.4.0",
-        "fastmcp>=2.0.0",
+        "fastmcp>=2.2.0",
         "pydantic>=2.0.0,<3.0.0"
     ],
     extras_require={
