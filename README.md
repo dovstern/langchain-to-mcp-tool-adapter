@@ -7,6 +7,7 @@ Convert your LangChain/LangGraph tools to Model Context Protocol with just one l
 
 ![@LangChain Tool to MCP Adapter](LangChain%20Tool%20to%20MCP%20Adapter.png)
 
+
 ## What are LLM "tools"?
 
 AI agents today go beyond chat, using LLMs to call tools — functions that interact with the outside world (applications, APIs, database, browsers). LangChain and Model Context Protocol (MCP) both offer interfaces for exposing these tools to LLMs, but with different strengths:
