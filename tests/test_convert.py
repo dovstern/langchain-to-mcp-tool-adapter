@@ -4,7 +4,7 @@ Tests for the adapter module functionality.
 
 from langchain_to_mcp_tool_adapter import add_langchain_tool_to_server
 from langchain_to_mcp_tool_adapter.adapter import reconstruct_func_from_tool
-from tests.test_tools import multiply_type_annotation, multiply_pydantic
+from .test_tools import multiply_type_annotation, multiply_pydantic
 
 
 def test_reconstruct_type_annotation_tool():
