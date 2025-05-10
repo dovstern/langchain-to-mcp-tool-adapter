@@ -4,7 +4,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
     long_description = fh.read()
 
 setup(
-    name="langchain-tool-to-mcp-adapter",
+    name="langchain_tool_to_mcp_adapter",
     version="0.1.0",
     author="LangChain Tool to MCP Adapter Contributors",
     author_email="maintainers@example.com",
