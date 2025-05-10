@@ -5,7 +5,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setup(
     name="langchain-to-mcp-tool-adapter",
-    version="0.1.0",
+    version="0.1.1",
     author="LangChain to MCP Tool Adapter Contributors",
     author_email="maintainers@example.com",
     description="Adapter for converting LangChain tools to FastMCP tools",
@@ -15,8 +15,6 @@ setup(
     packages=find_packages(),
     classifiers=[
         "Programming Language :: Python :: 3",
-        "Programming Language :: Python :: 3.8",
-        "Programming Language :: Python :: 3.9",
         "Programming Language :: Python :: 3.10",
         "Programming Language :: Python :: 3.11",
         "License :: OSI Approved :: MIT License",
@@ -25,10 +23,10 @@ setup(
         "Intended Audience :: Developers",
         "Topic :: Software Development :: Libraries :: Python Modules",
     ],
-    python_requires=">=3.8",
+    python_requires=">=3.10",
     install_requires=[
         "langchain>=0.1.0,<0.4.0",
-        "fastmcp>=1.0.0",
+        "fastmcp>=2.2.0",
         "pydantic>=2.0.0,<3.0.0"
     ],
     extras_require={
