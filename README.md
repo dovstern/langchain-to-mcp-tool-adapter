@@ -3,9 +3,10 @@
 [![PyPI version](https://badge.fury.io/py/langchain-tool-to-mcp-adapter.svg)](https://badge.fury.io/py/langchain-tool-to-mcp-adapter)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-![LangChain Tool to MCP Adapter](LangChain%20Tool%20to%20MCP%20Adapter.png)
-
 Convert your LangChain/LangGraph tools to Model Context Protocol with just one line of code. This adapter bridges the gap between LangChain and MCP ecosystems, making your tools available to both without duplicating code or tool metadata.
+
+![@LangChain Tool to MCP Adapter](LangChain%20Tool%20to%20MCP%20Adapter.png)
+
 
 ## What are LLM "tools"?
 
