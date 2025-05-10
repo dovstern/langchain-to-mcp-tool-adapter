@@ -1,0 +1,68 @@
+name: Auto Version and Release
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  version-and-release:
+    runs-on: ubuntu-latest
+    if: ${{ !contains(github.event.head_commit.message, 'skip ci') }}
+    
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+        token: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.10'
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install packaging gitpython build twine
+
+    - name: Determine version bump
+      id: bump
+      run: |
+        python .github/scripts/determine_version_bump.py
+      
+    - name: Update version in setup.py
+      id: update_version
+      run: |
+        python .github/scripts/update_setup_version.py
+        echo "NEW_VERSION=$(grep -oP 'version="\K[^"]+' setup.py)" >> $GITHUB_OUTPUT
+
+    - name: Commit version changes
+      run: |
+        git config --local user.email "github-actions[bot]@users.noreply.github.com"
+        git config --local user.name "github-actions[bot]"
+        git add setup.py
+        git commit -m "chore: bump version to ${{ steps.update_version.outputs.NEW_VERSION }} [skip ci]"
+        git tag v${{ steps.update_version.outputs.NEW_VERSION }}
+        git push origin main --tags
+
+    - name: Create GitHub Release
+      uses: softprops/action-gh-release@v1
+      with:
+        tag_name: v${{ steps.update_version.outputs.NEW_VERSION }}
+        name: Release v${{ steps.update_version.outputs.NEW_VERSION }}
+        generate_release_notes: true
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        
+    # PyPI publishing steps from python-publish.yml
+    - name: Build package
+      run: python -m build
+      
+    - name: Check package
+      run: twine check dist/*
+      
+    - name: Publish package to PyPI
+      uses: pypa/gh-action-pypi-publish@release/v1
+      with:
+        password: ${{ secrets.PYPI_API_TOKEN }} 
