@@ -5,7 +5,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setup(
     name="langchain_tool_to_mcp_adapter",
-    version="0.1.4",
+    version="0.1.5",
     author="LangChain Tool to MCP Adapter Contributors",
     author_email="maintainers@example.com",
     description="Adapter for converting LangChain tools to FastMCP tools",
