@@ -28,11 +28,11 @@ jobs:
         
     - name: Lint with flake8
       run: |
-        flake8 langchain_to_mcp_tool_adapter tests
+        flake8 langchain_tool_to_mcp_adapter tests
         
     - name: Format with black
       run: |
-        black --check langchain_to_mcp_tool_adapter tests
+        black --check langchain_tool_to_mcp_adapter tests
         
     - name: Test with pytest
       run: |

@@ -4,14 +4,14 @@ with open("README.md", "r", encoding="utf-8") as fh:
     long_description = fh.read()
 
 setup(
-    name="langchain-to-mcp-tool-adapter",
-    version="0.1.3",
-    author="LangChain to MCP Tool Adapter Contributors",
+    name="langchain-tool-to-mcp-adapter",
+    version="0.1.0",
+    author="LangChain Tool to MCP Adapter Contributors",
     author_email="maintainers@example.com",
     description="Adapter for converting LangChain tools to FastMCP tools",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="https://github.com/dovstern/langchain-to-mcp-tool-adapter",
+    url="https://github.com/dovstern/langchain-tool-to-mcp-adapter",
     packages=find_packages(),
     classifiers=[
         "Programming Language :: Python :: 3",
