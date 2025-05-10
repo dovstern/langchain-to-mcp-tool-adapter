@@ -1,4 +1,4 @@
-# LangChain to MCP Tool Adapter Examples
+# LangChain Tool to MCP Adapter Examples
 
 This directory contains examples demonstrating how to convert LangChain tools to MCP tools using the adapter.
 
@@ -17,7 +17,7 @@ In real-world scenarios, you would typically only convert in one direction based
 Before running these examples, ensure you have installed the necessary dependencies:
 
 ```bash
-pip install -e ..  # Install the langchain-to-mcp-tool-adapter from the parent directory
+pip install -e ..  # Install the langchain-tool-to-mcp-adapter from the parent directory
 pip install langchain uvicorn fastapi  # Required dependencies
 ```
 

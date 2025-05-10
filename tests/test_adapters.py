@@ -2,7 +2,7 @@
 Tests for adapter.py's artifact response handling.
 """
 
-from langchain_to_mcp_tool_adapter.adapter import handle_artifact_response
+from langchain_tool_to_mcp_adapter.adapter import handle_artifact_response
 
 
 def test_handle_regular_response():

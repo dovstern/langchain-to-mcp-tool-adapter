@@ -9,7 +9,7 @@ from mcp.server import FastMCP
 import sys
 import os
 sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
-from langchain_to_mcp_tool_adapter import add_langchain_tool_to_server
+from langchain_tool_to_mcp_adapter import add_langchain_tool_to_server
 import base64
 import logging
 

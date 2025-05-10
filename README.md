@@ -1,21 +1,29 @@
-# LangChain to MCP Tool Adapter
+# LangChain Tool to MCP Adapter
 
-[![PyPI version](https://badge.fury.io/py/langchain-to-mcp-tool-adapter.svg)](https://badge.fury.io/py/langchain-to-mcp-tool-adapter)
+[![PyPI version](https://badge.fury.io/py/langchain-tool-to-mcp-adapter.svg)](https://badge.fury.io/py/langchain-tool-to-mcp-adapter)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-A Python package for converting LangChain tools to FastMCP tools, making it easy to use your existing LangChain tools with Anthropic's MCP server.
+Convert your LangChain/LangGraph tools to Model Context Protocol with just one line of code. This adapter bridges the gap between LangChain and MCP ecosystems, making your tools available to both without duplicating code or tool metadata.
+
+## What are LLM "tools"?
+
+AI agents today go beyond chat, using LLMs to call tools — functions that interact with the outside world (applications, APIs, database, browsers). LangChain and Model Context Protocol (MCP) both offer interfaces for exposing these tools to LLMs, but with different strengths:
+
+- **LangChain tools** are optimized for LangGraph, the widely adopted agent development framework (why spin up an MCP Server for a tool you could just run from the code?).
+- **MCP tools** are designed for interoperability, making them discoverable by MCP client applications like Claude, Cursor, and soon ChatGPT.
+
+While LangChain already provides an MCP → LangGraph adapter, this package provides the missing piece for LangChain-first developers.
 
 ## Why Use This Package?
 
-- **Simpler Implementation**: While LangChain offers an MCP-to-LangChain adapter, it requires a running MCP server either remotely or co-located with an agent, which can be finicky. LangChain tools have a simpler implementation and are more lightweight.
-- **Use in Multiple Environments**: When creating tools (especially for open source), you might want to make them available in both LangChain and MCP implementations without duplicating code.
+- **Build Once, Use Everywhere**: Make your tools available in both LangChain and MCP implementations without duplicating code.
 - **Handle Artifacts Properly**: Automatic conversion between LangChain's `content_and_artifact` format and MCP's content format for images, PDFs, and other binary data.
-- **Preserve Metadata**: Tool descriptions, argument schemas, and other metadata are preserved during conversion.
+- **Preserve Metadata**: Tool descriptions, argument schemas, and other metadata are preserved during conversion - critical for agents to understand how to use your tools.
 
 ## Installation
 
 ```bash
-pip install langchain-to-mcp-tool-adapter
+pip install langchain-tool-to-mcp-adapter
 ```
 
 ## Quick Start
@@ -23,7 +31,7 @@ pip install langchain-to-mcp-tool-adapter
 ```python
 from mcp.server import FastMCP
 from langchain.tools import Tool
-from langchain_to_mcp_tool_adapter import add_langchain_tool_to_server
+from langchain_tool_to_mcp_adapter import add_langchain_tool_to_server
 
 # Create a LangChain tool
 def multiply(a: int, b: int) -> int:
@@ -36,7 +44,7 @@ calculator_tool = Tool(
     func=multiply
 )
 
-# Create a FastMCP server and add the tool
+# Create a FastMCP server and add the tool with just one line
 server = FastMCP()
 add_langchain_tool_to_server(server, calculator_tool)
 

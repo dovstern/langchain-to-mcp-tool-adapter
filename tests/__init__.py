@@ -1,3 +1,3 @@
 """
-Tests package for langchain-to-mcp-tool-adapter.
+Tests package for langchain-tool-to-mcp-adapter.
 """

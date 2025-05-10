@@ -2,8 +2,8 @@
 Tests for the adapter module functionality.
 """
 
-from langchain_to_mcp_tool_adapter import add_langchain_tool_to_server
-from langchain_to_mcp_tool_adapter.adapter import reconstruct_func_from_tool
+from langchain_tool_to_mcp_adapter import add_langchain_tool_to_server
+from langchain_tool_to_mcp_adapter.adapter import reconstruct_func_from_tool
 from .test_tools import multiply_type_annotation, multiply_pydantic
 
 
