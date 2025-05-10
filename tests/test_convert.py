@@ -12,9 +12,7 @@ def test_reconstruct_type_annotation_tool():
     reconstructed_tool = reconstruct_func_from_tool(multiply_type_annotation)
 
     # Verify that the reconstructed tool has the expected properties
-    assert (
-        reconstructed_tool.__name__ == multiply_type_annotation.func.__name__
-    )
+    assert reconstructed_tool.__name__ == multiply_type_annotation.func.__name__
     assert reconstructed_tool.__doc__ == multiply_type_annotation.description
 
     # Test that the function can be processed by MCP
@@ -60,10 +58,7 @@ def test_add_tools_to_server(empty_server, mock_tool, mock_artifact_tool):
     assert artifact_func_name in tools_dict
 
     # Verify the tool descriptions were preserved
-    assert (
-        tools_dict[simple_func_name].description
-        == "A simple mock tool for testing"
-    )
+    assert tools_dict[simple_func_name].description == "A simple mock tool for testing"
     assert (
         tools_dict[artifact_func_name].description
         == "A mock tool that returns artifacts"

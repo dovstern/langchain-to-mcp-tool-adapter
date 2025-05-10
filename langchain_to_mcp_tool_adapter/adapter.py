@@ -73,8 +73,7 @@ def handle_artifact_response(func):
         # Check if this is an artifact-returning function
         has_response_format = hasattr(func, "response_format")
         is_artifact = (
-            has_response_format
-            and func.response_format == "content_and_artifact"
+            has_response_format and func.response_format == "content_and_artifact"
         )
 
         if is_artifact:
@@ -87,9 +86,7 @@ def handle_artifact_response(func):
                     file_data = artifact["image_url"]["url"]
                     mime_type = _extract_mime_type(file_data)
                     response.append(
-                        ImageContent(
-                            type="image", data=file_data, mimeType=mime_type
-                        )
+                        ImageContent(type="image", data=file_data, mimeType=mime_type)
                     )
                 elif artifact["type"] == "file":
                     file_data = artifact["file"]["file_data"]
